@@ -16,23 +16,54 @@ export default function NotePage() {
     handleChange,
   } = useNote(noteId);
 
-  console.log("NotePage render:", { content, isOwner });
+  // console.log("NotePage render:", { content, isOwner });
 
   return (
-    <div className=" w-1/2 h-1/2 mx-auto space-y-4 p-8 bg-slate-100">
-      {/* Top bar */}
-      <div className="flex justify-between items-center text-sm text-gray-500">
-        <span>{userCount} users online</span>
-        {typingUsers.length > 0 && <span>Someone is typing...</span>}
-      </div>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="mx-auto max-w-4xl space-y-4">
+        {/* Top bar */}
+        <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-4">
+            <h1 className="font-bold text-gray-700">Note: {noteId.slice(0, 8)}...</h1>
+            <span className="rounded-full bg-green-100 px-3 py-1 text-xs text-green-700">
+              {userCount} Online
+            </span>
+          </div>
+          <div className="text-sm italic text-blue-500">
+            {typingUsers.length > 0 && "Someone is typing..."}
+          </div>
+        </div>
 
-      {/* Editor */}
-      <textarea
-        value={content}
-        onChange={(e) => handleChange(e.target.value)}
-        className=" w-full h-full border rounded p-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        placeholder="Start typing..."
-      />
+        {/* Editor */}
+        <textarea
+          value={content}
+          onChange={(e) => handleChange(e.target.value)}
+          className="min-h-[500px] w-full resize-none rounded-xl border-none bg-white p-8 shadow-lg outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Start collaborating..."
+        />
+
+        {isOwner && (
+          <p className="text-right text-xs text-gray-400">You are the owner of this note</p>
+        )}
+      </div>
     </div>
   );
+
+  // return (
+  //   <div className=" w-1/2 h-1/2 mx-auto space-y-4 p-8 bg-slate-100">
+  //     {/* Top bar */}
+  //     <div className="flex justify-between items-center text-sm text-gray-500">
+  //       <span>{userCount} users online</span>
+  //       {typingUsers.length > 0 && <span>Someone is typing...</span>}
+  //     </div>
+
+  //     {/* Editor */}
+  //     <textarea
+  //       value={content}
+  //       onChange={(e) => handleChange(e.target.value)}
+  //       className=" w-full h-full border rounded p-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+  //       placeholder="Start typing..."
+  //     />
+  //   </div>
+  // );
 }

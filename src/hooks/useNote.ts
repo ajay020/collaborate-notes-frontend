@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getSocket } from "../lib/socket";
+import { useSocket } from "../conext/socket-context";
 
 export function useNote(noteId: string) {
     const [content, setContent] = useState("");
@@ -9,27 +9,15 @@ export function useNote(noteId: string) {
 
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const [socket, setSocket] = useState(getSocket());
+    const socket = useSocket();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            const s = getSocket();
-            if (s) {
-                setSocket(s);
-                clearInterval(interval);
-            }
-        }, 100);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
+        // console.log("useeffect socket :", socket);
         if (!socket) return;
 
         socket.emit("join-note", noteId);
 
         const handleRole = ({ isOwner }: { isOwner: boolean }) => {
-            console.log("Role:", isOwner);
             setIsOwner(isOwner);
         };
 
@@ -38,7 +26,6 @@ export function useNote(noteId: string) {
         };
 
         const handleTyping = ({ userId }: { userId: string }) => {
-            console.log("Typing:", userId);
             setTypingUsers((prev) =>
                 prev.includes(userId) ? prev : [...prev, userId]
             );
@@ -49,7 +36,7 @@ export function useNote(noteId: string) {
         };
 
         const handleLoad = (data: string) => {
-            console.log("Note loaded:", data);
+            // console.log("Note loaded:", data);
             setContent(data);
         };
 

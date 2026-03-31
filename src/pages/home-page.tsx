@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { noteApi } from "../api/notes-api";
 
 export default function HomePage() {
     const [noteId, setNoteId] = useState("");
@@ -10,9 +11,17 @@ export default function HomePage() {
         navigate(`/note/${noteId}`);
     };
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         const id = crypto.randomUUID();
-        navigate(`/note/${id}`);
+        try {
+            //  Tell the DB a new note exists
+            await noteApi.createNote(id);
+
+            // Only then move to the editor
+            navigate(`/note/${id}`);
+        } catch (err) {
+            console.error("Could not create note", err);
+        }
     };
 
     return (
