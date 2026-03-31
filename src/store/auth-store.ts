@@ -19,6 +19,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         try {
             const data = await authApi.login(email, password);
+            console.log("Login successful, received token:", data.token);
 
             localStorage.setItem("token", data.token);
 

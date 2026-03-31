@@ -16,3 +16,16 @@ apiClient.interceptors.request.use((config) => {
 
     return config;
 });
+
+apiClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // localStorage.removeItem("token");
+            // window.location.href = "/login";
+        }
+
+        console.log("API Error:", error);
+        return Promise.reject(error);
+    }
+);
