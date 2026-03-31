@@ -19,9 +19,9 @@ export default function NotePage() {
   console.log("NotePage render:", { content, isOwner });
 
   return (
-    <div className="space-y-4 p-8 bg-amber-200 mx-auto">
+    <div className=" w-1/2 h-1/2 mx-auto space-y-4 p-8 bg-slate-100">
       {/* Top bar */}
-      <div className=" mx-auto w-1/2 flex justify-between items-center text-sm text-gray-500">
+      <div className="flex justify-between items-center text-sm text-gray-500">
         <span>{userCount} users online</span>
         {typingUsers.length > 0 && <span>Someone is typing...</span>}
       </div>
@@ -30,7 +30,7 @@ export default function NotePage() {
       <textarea
         value={content}
         onChange={(e) => handleChange(e.target.value)}
-        className="mx-auto w-1/2 border rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className=" w-full h-full border rounded p-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         placeholder="Start typing..."
       />
     </div>
