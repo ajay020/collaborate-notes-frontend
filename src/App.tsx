@@ -10,6 +10,7 @@ import { SocketProvider } from "./conext/socket-context";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.token);
+  console.log("ProtectedRoute render, token:", token);
 
   if (!token) {
     navigate("/login", { replace: true });
