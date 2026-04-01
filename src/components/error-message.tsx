@@ -1,11 +1,11 @@
 type Props = {
-    message: string;
+    message: string | null;
 };
 
 export default function ErrorMessage({ message }: Props) {
     return (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            ⚠️ {message}
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 mb-4 rounded-lg">
+            {message}
         </div>
     );
 }

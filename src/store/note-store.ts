@@ -25,7 +25,12 @@ export const useNoteStore = create<NoteState>((set, get) => ({
             set({ notes, isLoading: false });
         } catch (err: any) {
             console.log("Error fetching notes:", err);
-            set({ error: err.message || "Failed to load notes", isLoading: false });
+
+            if (err.status === 500) {
+                set({ error: "Server error. Try again later.", isLoading: false });
+            } else {
+                set({ error: err.message || "Failed to load notes", isLoading: false });
+            }
         }
     },
 
@@ -35,7 +40,11 @@ export const useNoteStore = create<NoteState>((set, get) => ({
             // Update the local state so the UI reflects the change immediately
             set((state) => ({ notes: [newNote, ...state.notes] }));
         } catch (err: any) {
-            set({ error: err.message || "Failed to create note" });
+            if (err.status === 500) {
+                set({ error: "Server error. Try again later." });
+            } else {
+                set({ error: err.message || "Failed to create note" });
+            }
         }
     },
 
@@ -49,6 +58,7 @@ export const useNoteStore = create<NoteState>((set, get) => ({
         try {
             await noteApi.deleteNote(noteId);
         } catch (err: any) {
+
             // Rollback if API fails
             set({ notes: previousNotes, error: err.message || "Delete failed" });
         }

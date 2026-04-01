@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={<ProtectedRoute> <MainLayout><Home /></MainLayout></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/note/:noteId" element={<NotePage />} />
+          <Route path="/note/:noteId" element={<ProtectedRoute><NotePage /></ProtectedRoute>} />
         </Routes>
       </SocketProvider>
     </BrowserRouter>

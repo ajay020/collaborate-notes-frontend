@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useNoteStore } from "../store/note-store";
 import NoteCard from "../components/note-card";
 import ErrorMessage from "../components/error-message";
+import Spinner from "../components/spinner";
 
 export default function HomePage() {
     const navigate = useNavigate();
@@ -18,12 +19,13 @@ export default function HomePage() {
         navigate(`/note/${id}`);
     };
 
-    if (isLoading) return <p>Loading...</p>;
-
-    if (error) return <ErrorMessage message={error} />;
+    if (isLoading) return (
+        <div className="flex justify-center items-center mt-4"><Spinner /></div>
+    );
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">
+            {error && <ErrorMessage message={error} />}
             <div className="max-w-5xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold text-gray-800">My Notes</h1>
