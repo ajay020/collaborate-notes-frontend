@@ -23,8 +23,9 @@ export const useNoteStore = create<NoteState>((set, get) => ({
         try {
             const notes = await noteApi.getAllNotes();
             set({ notes, isLoading: false });
-        } catch (err) {
-            set({ error: "Failed to load notes", isLoading: false });
+        } catch (err: any) {
+            console.log("Error fetching notes:", err);
+            set({ error: err.message || "Failed to load notes", isLoading: false });
         }
     },
 
@@ -33,13 +34,13 @@ export const useNoteStore = create<NoteState>((set, get) => ({
             const newNote = await noteApi.createNote(noteId);
             // Update the local state so the UI reflects the change immediately
             set((state) => ({ notes: [newNote, ...state.notes] }));
-        } catch (err) {
-            set({ error: "Failed to create note" });
+        } catch (err: any) {
+            set({ error: err.message || "Failed to create note" });
         }
     },
 
     removeNote: async (noteId: string) => {
-        // Optimistic Update: Remove it from UI first
+        // Optimistic Update: Remove the note from the UI immediately
         const previousNotes = get().notes;
         set((state) => ({
             notes: state.notes.filter((n) => n.noteId !== noteId)
@@ -47,9 +48,9 @@ export const useNoteStore = create<NoteState>((set, get) => ({
 
         try {
             await noteApi.deleteNote(noteId);
-        } catch (err) {
+        } catch (err: any) {
             // Rollback if API fails
-            set({ notes: previousNotes, error: "Delete failed" });
+            set({ notes: previousNotes, error: err.message || "Delete failed" });
         }
     }
 }));

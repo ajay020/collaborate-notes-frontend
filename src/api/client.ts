@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { ApiError } from "../types/api-error.types";
 
 export const apiClient = axios.create({
     baseURL: "http://localhost:5000/api",
@@ -23,11 +24,17 @@ apiClient.interceptors.response.use(
 
         if (error.response && error.response.status === 401) {
             localStorage.removeItem("token");
-            // window.location.href = "/login";
+            window.location.href = "/login";
         }
 
-        console.log("API Error:", error);
-        console.log("Response Data:", error.response);
-        return Promise.reject(error.response?.data || error.message);
+        const apiError: ApiError = {
+            message: error.response?.data?.message || error.message || "An unknown error occurred",
+            status: error.response?.status,
+            errors: error.response?.data?.errors,
+        }
+
+        console.log("API Error: ", error);
+        console.log("Error Response:", error.response);
+        return Promise.reject(apiError);
     }
 );

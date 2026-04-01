@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNoteStore } from "../store/note-store";
 import NoteCard from "../components/note-card";
+import ErrorMessage from "../components/error-message";
 
 export default function HomePage() {
     const navigate = useNavigate();
-    const { notes, isLoading, fetchNotes, addNote, removeNote, error } = useNoteStore();
+    const { notes, isLoading, fetchNotes, addNote, error } = useNoteStore();
 
     useEffect(() => {
         fetchNotes();
@@ -19,9 +20,7 @@ export default function HomePage() {
 
     if (isLoading) return <p>Loading...</p>;
 
-    if (error) return <p>{error}</p>
-
-    // console.log("Notes", notes)
+    if (error) return <ErrorMessage message={error} />;
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">
