@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNoteStore } from "../store/note-store";
+import NoteCard from "../components/note-card";
 
 export default function HomePage() {
     const navigate = useNavigate();
-    const { notes, isLoading, fetchNotes, addNote, error } = useNoteStore();
+    const { notes, isLoading, fetchNotes, addNote, removeNote, error } = useNoteStore();
 
     useEffect(() => {
         fetchNotes();
@@ -20,7 +21,7 @@ export default function HomePage() {
 
     if (error) return <p>{error}</p>
 
-    console.log("Notes", notes)
+    // console.log("Notes", notes)
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">
@@ -45,24 +46,7 @@ export default function HomePage() {
                     // Display the list in a Grid
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {notes.map((note) => (
-                            <div
-                                key={note._id}
-                                onClick={() => navigate(`/note/${note.noteId}`)}
-                                className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group"
-                            >
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="h-2 w-12 bg-blue-400 rounded-full"></div>
-                                    <span className="text-xs text-gray-400">
-                                        {new Date(note.updatedAt).toLocaleDateString()}
-                                    </span>
-                                </div>
-                                <p className="text-gray-600 line-clamp-3 text-sm">
-                                    {note.content || "Empty note..."}
-                                </p>
-                                <div className="mt-4 pt-4 border-t border-gray-50 opacity-0 group-hover:opacity-100 transition">
-                                    <span className="text-blue-600 text-xs font-semibold">Open Note →</span>
-                                </div>
-                            </div>
+                            <NoteCard key={note._id} note={note} />
                         ))}
                     </div>
                 )}
