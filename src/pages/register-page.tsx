@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../store/auth-store";
 
 export default function Register() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -15,7 +16,7 @@ export default function Register() {
         e.preventDefault();
         setError("");
         try {
-            await register(email, password);
+            await register(name, email, password);
             navigate("/login");
         } catch {
             setError("Failed to register. Please try again.");
@@ -34,6 +35,16 @@ export default function Register() {
                 )}
 
                 <div className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Name</label>
+                        <input
+                            className="mt-1 w-full rounded-md border border-gray-300 p-2 outline-none focus:ring-2 focus:ring-blue-500"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Name"
+                            type="text"
+                        />
+                    </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Email Address</label>
                         <input
