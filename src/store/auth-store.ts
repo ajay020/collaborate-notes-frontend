@@ -6,7 +6,7 @@ type AuthState = {
     token: string | null;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string) => Promise<void>;
+    register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => void;
 };
 
@@ -33,11 +33,11 @@ export const useAuthStore = create<AuthState>((set) => ({
         }
     },
 
-    register: async (email, password) => {
+    register: async (name, email, password) => {
         set({ isLoading: true });
 
         try {
-            await authApi.register(email, password);
+            await authApi.register(name, email, password);
             set({ isLoading: false });
         } catch (err) {
             set({ isLoading: false });
