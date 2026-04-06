@@ -9,8 +9,8 @@ export const noteApi = {
     },
 
     // Initialize a new note in the database
-    createNote: async (noteId: string): Promise<Note> => {
-        const response = await apiClient.post<Note>("/notes", { noteId });
+    createNote: async (noteId: string, title: string): Promise<Note> => {
+        const response = await apiClient.post<Note>("/notes", { noteId, title });
         return response.data;
     },
 

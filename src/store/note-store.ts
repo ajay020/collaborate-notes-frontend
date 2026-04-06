@@ -9,7 +9,7 @@ interface NoteState {
 
     // Actions
     fetchNotes: () => Promise<void>;
-    addNote: (noteId: string) => Promise<void>;
+    addNote: (noteId: string, title:string) => Promise<void>;
     removeNote: (noteId: string) => Promise<void>;
 }
 
@@ -34,9 +34,9 @@ export const useNoteStore = create<NoteState>((set, get) => ({
         }
     },
 
-    addNote: async (noteId: string) => {
+    addNote: async (noteId: string, title:string) => {
         try {
-            const newNote = await noteApi.createNote(noteId);
+            const newNote = await noteApi.createNote(noteId, title);
             // Update the local state so the UI reflects the change immediately
             set((state) => ({ notes: [newNote, ...state.notes] }));
         } catch (err: any) {

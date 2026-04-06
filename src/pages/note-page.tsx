@@ -16,7 +16,7 @@ export default function NotePage() {
     handleChange,
   } = useNote(noteId);
 
-  console.log("NotePage render:", { content, isOwner });
+  // console.log("NotePage render:", { content, isOwner });
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">

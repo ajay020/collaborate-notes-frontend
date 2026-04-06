@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import type { Note } from "../types/note.types";
 import { useNoteStore } from "../store/note-store";
+
+import type { Note } from "../types/note.types";
 
 type Props = {
     note: Note;
@@ -25,6 +26,8 @@ export default function NoteCard({ note }: Props) {
         navigate(`/note/${note.noteId}`);
     };
 
+
+
     return (
         <div
             onClick={() => navigate(`/note/${note.noteId}`)}
@@ -38,6 +41,8 @@ export default function NoteCard({ note }: Props) {
                     {new Date(note.updatedAt).toLocaleDateString()}
                 </span>
             </div>
+
+            <p className="font-semibold text-lg">{note.title}</p>
 
             {/* Content */}
             <p className="text-gray-600 mb-6 line-clamp-3 text-sm">

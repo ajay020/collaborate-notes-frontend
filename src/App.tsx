@@ -25,13 +25,19 @@ function App() {
     <BrowserRouter>
       <SocketProvider>
         <Routes>
-          <Route path="/" element={<ProtectedRoute> <MainLayout><Home /></MainLayout></ProtectedRoute>} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>} >
+            <Route index element={<Home />} />
+            <Route path="/note/:noteId" element={<NotePage />} />
+          </Route>
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/note/:noteId" element={<ProtectedRoute><NotePage /></ProtectedRoute>} />
         </Routes>
-      </SocketProvider>
-    </BrowserRouter>
+      </SocketProvider >
+    </BrowserRouter >
   );
 }
 
