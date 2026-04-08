@@ -10,6 +10,8 @@ export default function Register() {
     const navigate = useNavigate();
 
     const register = useAuthStore((s) => s.register);
+    const login = useAuthStore((s) => s.login);
+
     const isLoading = useAuthStore((s) => s.isLoading);
 
     const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -17,9 +19,10 @@ export default function Register() {
         setError("");
         try {
             await register(name, email, password);
+            await login(email, password)
             navigate("/login");
-        } catch {
-            setError("Failed to register. Please try again.");
+        } catch (err: any) {
+            setError(err.message || "Failed to register. Please try again.");
         }
     };
 

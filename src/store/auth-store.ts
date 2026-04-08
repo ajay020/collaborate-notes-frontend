@@ -2,9 +2,18 @@ import { create } from "zustand";
 import { authApi } from "../api/auth-api";
 import { connectSocket, disconnectSocket } from "../lib/socket";
 
+type Organization = {
+    _id: string;
+    name: string;
+    role: string;
+};
+
 type AuthState = {
     token: string | null;
+    organizations: Organization[];
+    currentOrg: Organization | null;
     isLoading: boolean;
+
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => void;
@@ -12,6 +21,8 @@ type AuthState = {
 
 export const useAuthStore = create<AuthState>((set) => ({
     token: localStorage.getItem("token"),
+    organizations: [],
+    currentOrg: null,
     isLoading: false,
 
     login: async (email, password) => {
@@ -19,14 +30,27 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         try {
             const data = await authApi.login(email, password);
-            console.log("Login successful, received token:", data.token);
+            console.log("Login resonse", data)
 
+            // ✅ Save token
             localStorage.setItem("token", data.token);
 
-            // connect socket here
+            // ✅ Save orgs
+            const orgs = data.organizations;
+
+            // ✅ Default org (first one)
+            const currentOrg = orgs[0] || null;
+
+            // connect socket
             connectSocket(data.token);
 
-            set({ token: data.token, isLoading: false });
+            set({
+                token: data.token,
+                organizations: orgs,
+                currentOrg,
+                isLoading: false
+            });
+
         } catch (err) {
             set({ isLoading: false });
             throw err;
@@ -48,9 +72,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     logout: () => {
         localStorage.removeItem("token");
 
-        //  disconnect socket
         disconnectSocket();
 
-        set({ token: null });
+        set({
+            token: null,
+            organizations: [],
+            currentOrg: null
+        });
     },
 }));
