@@ -3,6 +3,7 @@ import { noteApi } from '../api/notes-api';
 import type { Note } from '../types/note.types';
 
 interface NoteState {
+    // State
     notes: Note[];
     isLoading: boolean;
     error: string | null;

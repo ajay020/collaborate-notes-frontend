@@ -3,13 +3,17 @@ import { useNoteStore } from "../store/note-store";
 import NoteCard from "../components/note-card";
 import ErrorMessage from "../components/error-message";
 import Spinner from "../components/spinner";
+import { useAuthStore } from "../store/auth-store";
 
 export default function HomePage() {
     const { notes, isLoading, fetchNotes, error } = useNoteStore();
+    const currentOrg = useAuthStore(s => s.currentOrg);
 
     useEffect(() => {
-        fetchNotes();
-    }, [fetchNotes]);
+        if (currentOrg) {
+            fetchNotes();
+        }
+    }, [currentOrg?._id]);
 
 
     if (isLoading) return (

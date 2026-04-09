@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth-store";
+import OrgSwitcher from "./OrgSwitcher";
 
 export default function Navbar() {
     const navigate = useNavigate()
@@ -13,6 +14,7 @@ export default function Navbar() {
     return (
         <div className="bg-white border-b px-6 py-3 flex justify-between items-center">
             <h1 className="font-semibold text-lg">Notes</h1>
+            <OrgSwitcher />
 
             <button
                 onClick={handleLogout}

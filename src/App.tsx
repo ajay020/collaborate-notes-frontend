@@ -6,11 +6,13 @@ import Register from "./pages/register-page";
 import { useAuthStore } from "./store/auth-store";
 import MainLayout from "./components/main-layout";
 import { SocketProvider } from "./conext/socket-context";
+import InvitesPage from "./pages/invite-page";
+import { useEffect } from "react";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.token);
-  console.log("ProtectedRoute render, token:", token);
+  // console.log("ProtectedRoute render, token:", token);
 
   if (!token) {
     navigate("/login", { replace: true });
@@ -20,6 +22,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 }
 
 function App() {
+  const hydrateAuth = useAuthStore(s => s.hydrateAuth);
+
+  useEffect(() => {
+    hydrateAuth();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -31,6 +38,7 @@ function App() {
             </ProtectedRoute>} >
             <Route index element={<Home />} />
             <Route path="/note/:noteId" element={<NotePage />} />
+            <Route path="/invites" element={<InvitesPage />} />
           </Route>
 
           <Route path="/login" element={<Login />} />

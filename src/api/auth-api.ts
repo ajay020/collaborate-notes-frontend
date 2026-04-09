@@ -17,7 +17,38 @@ export const authApi = {
             password,
         });
 
-        console.log("Login api", res)
+        // console.log("Login api", res)
         return res.data;
     },
+
+    getMe: async () => {
+        const res = await apiClient.get("/auth/me");
+        return res.data;
+    },
+
+    switchOrg: async (orgId: string) => {
+        const res = await apiClient.post("/auth/switch-org", { orgId });
+        return res.data;
+    },
+
+    inviteUser: async (email: string, role: string) => {
+        const res = await apiClient.post("/auth/invite", {
+            email,
+            role,
+        });
+        return res.data;
+    },
+
+    getInvites: async () => {
+        const res = await apiClient.get("/auth/invites");
+        // console.log("Invites api data", res.data)
+        return res.data;
+    },
+
+    acceptInvite: async (inviteId: string) => {
+        const res = await apiClient.post("/auth/accept-invite", {
+            inviteId
+        });
+        return res.data;
+    }
 };
