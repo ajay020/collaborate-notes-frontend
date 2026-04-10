@@ -1,40 +1,63 @@
-import { Link } from "react-router-dom"
 import { useState } from "react";
 import AddTitleModal from "./add-title-modal";
 import InviteModal from "./invite-modal";
 import OrgSwitcher from "./org-switcher";
-import { Pencil, Plus, User, UserPlus } from "lucide-react";
+import { Menu, Pencil, Plus, User, UserPlus } from "lucide-react";
+import SidebarItem from "./sidebar-item";
 
-function Sidebar() {
+
+type SidebarProps = {
+    isCollapsed: boolean;
+    toggleSidebar: () => void;
+}
+
+function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
     const [showModal, setShowModal] = useState(false);
     const [showInvite, setShowInvite] = useState(false);
 
     return (
         <>
-            <div className="w-60 bg-gray-100 p-4 flex flex-col gap-3 border-r">
-                <OrgSwitcher />
-
+            <div
+                className={`${isCollapsed ? "w-20" : "w-60"
+                    } bg-gray-100 p-4 flex flex-col gap-3 border-r transition-all duration-300`}
+            >
+                {/* Toggle */}
                 <button
-                    onClick={() => setShowModal(!showModal)}
-                    className="flex items-center rounded  px-3 bg-white-500 text-gray-700 py-2  hover:bg-gray-200"
+                    onClick={toggleSidebar}
+                    className={`flex ${isCollapsed ? "justify-center" : "justify-end"} text-gray-500 hover:text-black`}
                 >
-                    <Plus size={16} className="mr-2" /> Add Note
+                    <Menu size={20} />
                 </button>
 
-                <button
+                {!isCollapsed && <OrgSwitcher />}
+
+                <SidebarItem
+                    icon={<Plus size={20} />}
+                    label="Add Note"
+                    onClick={() => setShowModal(true)}
+                    isCollapsed={isCollapsed}
+                />
+
+                <SidebarItem
+                    icon={<UserPlus size={20} />}
+                    label="Invite User"
                     onClick={() => setShowInvite(true)}
-                    className=" flex items-center rounded px-3 bg-white-500 text-gray-700 py-2  hover:bg-gray-200"
-                >
-                    <UserPlus size={16} className="mr-2" /> Invite User
-                </button>
+                    isCollapsed={isCollapsed}
+                />
 
-                <Link to="/" className="flex items-center rounded px-3 text-gray-700 py-2 hover:text-black hover:bg-gray-200">
-                    <Pencil size={16} className="mr-2" /> Notes
-                </Link>
+                <SidebarItem
+                    icon={<Pencil size={20} />}
+                    label="Notes"
+                    to="/"
+                    isCollapsed={isCollapsed}
+                />
 
-                <Link to="/invites" className="flex items-center rounded px-3 text-gray-700 py-2 hover:text-black hover:bg-gray-200">
-                    <User size={16} className="mr-2" /> Invitations
-                </Link>
+                <SidebarItem
+                    icon={<User size={20} />}
+                    label="Invitations"
+                    to="/invites"
+                    isCollapsed={isCollapsed}
+                />
             </div>
 
             {showModal && <AddTitleModal onCancel={() => setShowModal(false)} />}
