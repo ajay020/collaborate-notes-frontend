@@ -7,12 +7,19 @@ type Organization = {
     role: string;
 };
 
+type User = {
+    _id: string;
+    name: string;
+    email: string;
+}
+
 type AuthState = {
     token: string | null;
     organizations: Organization[];
     currentOrg: Organization | null;
     isLoading: boolean;
     isHydrated: boolean;
+    user: User | null;
 
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
@@ -29,6 +36,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     currentOrg: null,
     isLoading: false,
     isHydrated: false,
+    user: null,
 
     login: async (email, password) => {
         set({ isLoading: true });
@@ -53,7 +61,8 @@ export const useAuthStore = create<AuthState>((set) => ({
                 token: data.token,
                 organizations: orgs,
                 currentOrg,
-                isLoading: false
+                isLoading: false,
+                user: data.user
             });
 
         } catch (err) {
@@ -135,7 +144,8 @@ export const useAuthStore = create<AuthState>((set) => ({
                 token,
                 organizations: data.organizations,
                 currentOrg: data.organizations[0] || null,
-                isHydrated: true
+                isHydrated: true,
+                user: data.user
             });
 
         } catch (err) {
