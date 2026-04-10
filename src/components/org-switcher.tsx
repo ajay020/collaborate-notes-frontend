@@ -16,7 +16,7 @@ export default function OrgSwitcher() {
     console.log(organizations)
 
     return (
-        <div className="relative">
+        <div className="relative bg-amber-200">
             {/* Button */}
             <button
                 onClick={() => setOpen(!open)}

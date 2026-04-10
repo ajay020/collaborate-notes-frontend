@@ -1,5 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useNoteStore } from "../store/note-store";
+import { Link } from "react-router-dom"
 import { useState } from "react";
 import AddTitleModal from "./add-title-modal";
 import InviteModal from "./invite-modal";
@@ -22,7 +21,7 @@ function Sidebar() {
                 {/* NEW BUTTON */}
                 <button
                     onClick={() => setShowInvite(true)}
-                    className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600"
+                    className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600"
                 >
                     Invite User
                 </button>

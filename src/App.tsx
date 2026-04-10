@@ -21,10 +21,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children
 }
 
+
+
 function App() {
   const hydrateAuth = useAuthStore(s => s.hydrateAuth);
 
   useEffect(() => {
+    
     hydrateAuth();
   }, []);
 

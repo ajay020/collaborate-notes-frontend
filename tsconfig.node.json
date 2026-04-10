@@ -10,12 +10,13 @@
       "node"
     ],
     "skipLibCheck": true,
-    "composite": true, // KEEP THIS
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    // REMOVE "noEmit": true FROM HERE //
+    "noEmit": true,
+    "composite": true,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
