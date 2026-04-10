@@ -13,6 +13,7 @@ type AuthState = {
     organizations: Organization[];
     currentOrg: Organization | null;
     isLoading: boolean;
+    isHydrated: boolean;
 
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
@@ -28,6 +29,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     organizations: [],
     currentOrg: null,
     isLoading: false,
+    isHydrated: false,
 
     login: async (email, password) => {
         set({ isLoading: true });
@@ -122,7 +124,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     hydrateAuth: async () => {
         const token = localStorage.getItem("token");
 
-        if (!token) return;
+        if (!token) {
+            set({ isHydrated: true });
+            return;
+        }
 
         try {
             const data = await authApi.getMe();
@@ -130,14 +135,15 @@ export const useAuthStore = create<AuthState>((set) => ({
             set({
                 token,
                 organizations: data.organizations,
-                currentOrg: data.organizations[0] || null
+                currentOrg: data.organizations[0] || null,
+                isHydrated: true
             });
 
             connectSocket(token);
 
         } catch (err) {
-            console.error("Hydration failed", err);
             localStorage.removeItem("token");
+            set({ isHydrated: true });
         }
     }
 }));
