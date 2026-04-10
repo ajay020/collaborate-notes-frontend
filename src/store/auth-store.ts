@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { authApi } from "../api/auth-api";
-import { connectSocket, disconnectSocket } from "../lib/socket";
 
 type Organization = {
     _id: string;
@@ -38,17 +37,17 @@ export const useAuthStore = create<AuthState>((set) => ({
             const data = await authApi.login(email, password);
             console.log("Login resonse", data)
 
-            // ✅ Save token
+            //  Save token
             localStorage.setItem("token", data.token);
 
-            // ✅ Save orgs
+            //  Save orgs
             const orgs = data.organizations;
 
-            // ✅ Default org (first one)
+            // Default org (first one)
             const currentOrg = orgs[0] || null;
 
             // connect socket
-            connectSocket(data.token);
+            // connectSocket(data.token);
 
             set({
                 token: data.token,
@@ -78,7 +77,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     logout: () => {
         localStorage.removeItem("token");
 
-        disconnectSocket();
+        // disconnectSocket();
 
         set({
             token: null,
@@ -95,7 +94,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             localStorage.setItem("token", data.token);
 
             // reconnect socket with new org context
-            connectSocket(data.token);
+            // connectSocket(data.token);
 
             set((state) => ({
                 token: data.token,
@@ -138,8 +137,6 @@ export const useAuthStore = create<AuthState>((set) => ({
                 currentOrg: data.organizations[0] || null,
                 isHydrated: true
             });
-
-            connectSocket(token);
 
         } catch (err) {
             localStorage.removeItem("token");
