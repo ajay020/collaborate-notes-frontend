@@ -12,7 +12,7 @@ import Spinner from "./components/spinner";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = useAuthStore((s) => s.token);
-  console.log("ProtectedRoute render, token:", token);
+  // console.log("ProtectedRoute render, token:", token);
 
   const isHydrated = useAuthStore(s => s.isHydrated);
 
@@ -34,8 +34,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const token = useAuthStore(s => s.token);
   const isHydrated = useAuthStore(s => s.isHydrated);
 
-  console.log("public route render, token:", token);
-
+  // console.log("public route render, token:", token);
 
   if (!isHydrated) {
     return <div className="flex justify-center items-center h-screen">

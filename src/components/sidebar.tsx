@@ -5,7 +5,7 @@ import OrgSwitcher from "./org-switcher";
 import { Menu, Pencil, Plus, User, UserPlus } from "lucide-react";
 import SidebarItem from "./sidebar-item";
 import UserProfile from "./user-profile";
-
+import ProfileModal from "./profile-modal";
 
 type SidebarProps = {
     isCollapsed: boolean;
@@ -15,6 +15,7 @@ type SidebarProps = {
 function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
     const [showModal, setShowModal] = useState(false);
     const [showInvite, setShowInvite] = useState(false);
+    const [showProfileModal, setShowProfileModal] = useState(false);
 
     return (
         <>
@@ -69,12 +70,18 @@ function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
 
                 {/* Bottom Section */}
                 <div className="mt-auto pt-3 border-t">
-                    <UserProfile isCollapsed={isCollapsed} />
+                    <UserProfile
+                        onClick={() => setShowProfileModal(true)}
+                        isCollapsed={isCollapsed}
+                    />
                 </div>
             </div>
 
             {showModal && <AddTitleModal onCancel={() => setShowModal(false)} />}
             {showInvite && <InviteModal onClose={() => setShowInvite(false)} />}
+            {showProfileModal && (
+                <ProfileModal onClose={() => setShowProfileModal(false)} />
+            )}
         </>
     );
 }
