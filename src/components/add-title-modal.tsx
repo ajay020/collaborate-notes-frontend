@@ -7,41 +7,67 @@ interface Props {
 }
 
 function AddTitleModal({ onCancel }: Props) {
-    const [title, setTitle] = useState("")
+    const [title, setTitle] = useState("");
 
     const navigate = useNavigate();
     const addNote = useNoteStore(s => s.addNote);
 
     const handleCreate = async () => {
+        if (!title.trim()) return;
+
         const id = crypto.randomUUID();
         await addNote(id, title);
-        await navigate(`/note/${id}`);
-        onCancel()
-    }
+        navigate(`/note/${id}`);
+        onCancel();
+    };
 
     return (
-        <div className=' absolute  flex items-center justify-center border-amber-50 w-full h-screen'>
-            <div className=' flex flex-col gap-1.5 items-center 
-            justify-center absolute top-20 bg-white rounded 
-             z-30 w-80 h-40 border'>
+        <div onClick={onCancel} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+            {/* Modal */}
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white w-full max-w-sm rounded-xl shadow-lg p-6"
+            >
+
+                <h2 className="text-lg font-semibold mb-4">
+                    Create New Note
+                </h2>
+
                 <input
-                    className='p-4 border'
-                    onChange={(e) => setTitle(e.target.value)}
+                    autoFocus
                     type="text"
                     value={title}
-                    placeholder='Enter title'
+                    onChange={(e) => setTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") handleCreate();
+                    }}
+                    placeholder="Enter note title..."
+                    className="w-full border rounded-md px-3 py-2 
+                    outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div className='flex gap-2 mt-4'>
-                    <button onClick={onCancel} className='bg-red-500 px-4  py-2 text-white cursor-pointer'>
+
+                {/* Buttons */}
+                <div className="flex justify-end gap-2 mt-5">
+                    <button
+                        onClick={onCancel}
+                        className="px-4 py-2 rounded-md border hover:bg-gray-100"
+                    >
                         Cancel
                     </button>
-                    <button onClick={handleCreate} className='bg-blue-500 px-4  py-2 text-white cursor-pointer'>
-                        Add title
+
+                    <button
+                        onClick={handleCreate}
+                        className="px-4 py-2 rounded-md bg-blue-600
+                        text-white hover:bg-blue-700 disabled:opacity-50"
+                        disabled={!title.trim()}
+                    >
+                        Create
                     </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default AddTitleModal
