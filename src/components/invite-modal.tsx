@@ -11,9 +11,12 @@ export default function InviteModal({ onClose }: { onClose: () => void }) {
     const [error, setError] = useState("");
 
     const handleInvite = async () => {
+        if (!email.trim()) return;
+
         setLoading(true);
         setError("");
         setMessage("");
+
 
         try {
             await inviteUser(email, role);
@@ -28,16 +31,18 @@ export default function InviteModal({ onClose }: { onClose: () => void }) {
 
     return (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-            <div className="bg-white p-6 rounded w-80 space-y-4">
+            <div className="bg-white w-full max-w-sm rounded-xl shadow-lg p-6">
                 <h2 className="text-lg font-semibold">Invite User</h2>
 
                 {message && <p className="text-green-600 text-sm">{message}</p>}
                 {error && <p className="text-red-600 text-sm">{error}</p>}
 
                 <input
+                    autoFocus
                     type="email"
                     placeholder="Enter email"
-                    className="w-full border p-2 rounded"
+                    className="w-full border p-2 my-3 
+                    rounded  outline-none focus:ring-2 focus:ring-blue-500"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -51,7 +56,7 @@ export default function InviteModal({ onClose }: { onClose: () => void }) {
                     <option value="admin">Admin</option>
                 </select>
 
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 mt-3">
                     <button
                         onClick={onClose}
                         className="px-3 py-1 border rounded"
